@@ -1,0 +1,46 @@
+Project: Assignment 3
+Author(s): Philip Regan
+Source Code Copyright: Copyright (c) 2015 Philip Regan All Rights Reserved.
+Additional Copyright: None
+Source: New source only; no adaptations.
+Requirements: None
+Notes:
+*
+
+Bugs:
+*
+
+Roadmap:
+* Step 1: Get this running
+    * set up an "application" with the Google Drive API
+        // https://developers.google.com/drive/web/quickstart/js#step_1_enable_the_api_name
+* Step 2: Convert the existing application to angular
+    * A routing config that will have 2 views, a list (or index) and a document view
+        // each of those routes are (probably) going to need a controller
+    * A Google Drive Service to handle all of the calls
+        // remember to mock all usage of $http with $httpBackend
+    * A directive to handle the oauth button
+    * A service to hold on to the CLIENT_ID and SCOPES for use in the Google Drive Service.
+* Step 3
+    * Translate the text
+        * Establish a service for the public API at http://ancient-anchorage-9224.herokuapp.com/zombify?q=zombify
+        * Testing this service should use $httpBackend.
+* Step 4: Testing
+    // Any controller, directive, or service will need tests associated with it.
+    // don't test whether the API is working. Mock it.
+    // Don't test services through the controllers, test one thing at a time.
+* Rubric
+    * Created a client ID
+    * Use of routing
+        * For at least the two views: list and document
+    * Use of directive
+        * for at least the oauth button
+    * Use of service for gdata
+    * Use of service for ztranslator
+    * Testing
+        * controllers, directives and services.
+
+Change History:
+    15_11_06_01_00_000: Started source
+
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Started source"; git push origin master; git status
