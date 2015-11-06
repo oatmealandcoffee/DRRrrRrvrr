@@ -11,8 +11,8 @@ Bugs:
 *
 
 Roadmap:
-* Step 1: Get this running
-    * set up an "application" with the Google Drive API
+X Step 1: Get this running
+    X set up an "application" with the Google Drive API
         // https://developers.google.com/drive/web/quickstart/js#step_1_enable_the_api_name
 * Step 2: Convert the existing application to angular
     * A routing config that will have 2 views, a list (or index) and a document view
@@ -30,7 +30,7 @@ Roadmap:
     // don't test whether the API is working. Mock it.
     // Don't test services through the controllers, test one thing at a time.
 * Rubric
-    * Created a client ID
+    X Created a client ID
     * Use of routing
         * For at least the two views: list and document
     * Use of directive
