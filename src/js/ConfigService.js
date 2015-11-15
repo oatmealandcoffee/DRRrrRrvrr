@@ -2,12 +2,15 @@ angular.module('DRRrrRrvrr')
   .service('ConfigService', ['$http', function( $http ){
 
       var svc = this;
+      svc.data = {};
       svc.CLIENT_ID = '';
       svc.SCOPES = '';
 
       svc.get = function( callback ) {
           $http.get('/js/config.js', {}).then(function(response){
-              names.list = response.data;
+              svc.data = response.data;
+              svc.CLIENT_ID = svc.data.CLIENT_ID;
+              svc.SCOPES = svc.data.SCOPES;
               console.log(response);
               console.log(response.data);
               if(callback){
@@ -17,5 +20,7 @@ angular.module('DRRrrRrvrr')
                 console.log(response);
             });
       };
+
+      svc.get();
 
   }]);
