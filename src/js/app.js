@@ -58,7 +58,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
       // clicking authorize button.
       authorizeDiv.style.display = 'inline';
     }
-  }
+};
 
   /**
    * Initiate auth flow in response to user clicking authorize button.
@@ -70,14 +70,14 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
       {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
       handleAuthResult);
     return false;
-  }
+};
 
   /**
    * Load Drive API client library.
    */
   svc.loadDriveApi = function() {
     gapi.client.load('drive', 'v2', action);
-  }
+};
 
   /**
    * Print files.
@@ -99,7 +99,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
           appendLink('', 'No files found.');
         }
       });
-  }
+  };
 
   svc.displayFile = function() {
     fileId = window.location.hash.substring(1);
@@ -120,7 +120,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
       });
 
     });
-  }
+};
 
   /**
    * Append a link element to the body containing the given text
@@ -140,7 +140,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
     } else {
       $('#output').append(text);
     }
-  }
+};
 }]);
 
 app.service('ConfigService', [function(){

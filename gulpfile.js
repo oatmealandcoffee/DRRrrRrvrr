@@ -9,16 +9,19 @@ var connect = require('gulp-connect');
 // *******************************************
 
 gulp.task('buildApp', function(){
-  return gulp.src(['src/js/**/*.js'])
-    .pipe(concat('app.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'))
-    .pipe(connect.reload());
+
+    return gulp.src(['src/js/**/*.js'])
+      .pipe(concat('app.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest('dist'))
+      .pipe(connect.reload());
 });
 
 gulp.task('buildVendor', function(){
+
   return gulp.src([
     'bower_components/jquery/dist/jquery.min.js',
+    'bower_components/angular/angular.min.js',
     'bower_components/**/*.min.js'])
     .pipe(concat('vendors.js'))
     .pipe(uglify())

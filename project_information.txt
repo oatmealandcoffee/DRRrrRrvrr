@@ -30,6 +30,10 @@ X Step 1: Get this running
     // don't test whether the API is working. Mock it.
     // Don't test services through the controllers, test one thing at a time.
 * Actionable Step 2: Convert existing app to angular
+	* get gulp up to date with all the frameworks
+	* where is google docs api loaded ion routastic?
+	* fix jshint errors
+	* get karma up to date with all the frameworks
     * Create CLIENT_ID and SCOPES service
     * Create directive for oauth button // see Week-10-solution
         * include in index.html
@@ -76,5 +80,6 @@ Change History:
     15_11_15_02_04_000: Updated GoogleDriveService to use ConfigService for auth tokens
     15_11_15_02_05_000: Updated gulp and karma to load ConfigService first
 	15_11_15_02_06_000: Refactored everything to single app.js file to have easier control over load order and file management
+	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
 	
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Refactored everything to single app.js file"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Fixed bugs in bower, gulp, and karma"; git push origin master; git status
