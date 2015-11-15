@@ -9,7 +9,7 @@ var connect = require('gulp-connect');
 // *******************************************
 
 gulp.task('buildApp', function(){
-  return gulp.src(['src/js/config.js', 'src/js/**/*.js'])
+  return gulp.src(['src/js/**/*.js'])
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'))

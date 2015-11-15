@@ -74,5 +74,7 @@ Change History:
     15_11_15_02_02_000: Added get code to ConfigService and updated config to json
     15_11_15_02_03_000: Updated ConfigService to populate values from config files and init upon load
     15_11_15_02_04_000: Updated GoogleDriveService to use ConfigService for auth tokens
-
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated GoogleDriveService to use ConfigService for auth tokens"; git push origin master; git status
+    15_11_15_02_05_000: Updated gulp and karma to load ConfigService first
+	15_11_15_02_06_000: Refactored everything to single app.js file to have easier control over load order and file management
+	
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Refactored everything to single app.js file"; git push origin master; git status
