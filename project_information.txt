@@ -30,30 +30,25 @@ X Step 1: Get this running
     // don't test whether the API is working. Mock it.
     // Don't test services through the controllers, test one thing at a time.
 * Actionable Step 2: Convert existing app to angular
-	* get gulp up to date with all the frameworks
-	* where is google docs api loaded ion routastic?
-	* fix jshint errors
-	* get karma up to date with all the frameworks
-    * Create CLIENT_ID and SCOPES service
+	X get gulp up to date with all the frameworks
+	X where is google docs api loaded ion routastic?
+	X fix jshint errors
+	X get karma up to date with all the frameworks
+    X Create CLIENT_ID and SCOPES service
     * Create directive for oauth button // see Week-10-solution
-        * include in index.html
-    * Create Google Drive Service // see routastic
-        * Migrate app.js code
-        * inject client/scopes service
-        * add button to index.html for oauth
-    > Create list controller // see app.js; requires oauth directive, Google Drive Service
-        * add Google Drive service
+        * include in index.html as button
+        * Use GoogleDriveService as controller
+        * Update view with $rootScope.apply() // see discussions
+    X Create Google Drive Service // see routastic
+        X Migrate app.js code
+        X inject client/scopes service
+    > Create list controller // see app.js; requires oauth directive, Google
         * Add oauth directive
-    > Create document view controller // see app.js; requires oauth directive Google Drive Service
-        * add Google Drive service
-        * Add oauth directive
+    > Create document view controller // see app.js; requires oauth directive 
     * Create routing config // see Routastic
-        * '/list'
-        * '/doc'
         * Merge doc.html and index.html common code
         * Create doc.html and list.html views
-    * Create client id and scopes service // see routastic
-
+    * Update client id and scopes service to pull from server // see routastic
     * Tests
 * Step 3: Translate the text
     * Create service for the public API
@@ -81,5 +76,6 @@ Change History:
     15_11_15_02_05_000: Updated gulp and karma to load ConfigService first
 	15_11_15_02_06_000: Refactored everything to single app.js file to have easier control over load order and file management
 	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
+	15_11_15_02_07_000: Added oauth directive to html
 	
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Fixed bugs in bower, gulp, and karma"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Added oauth directive to html"; git push origin master; git status

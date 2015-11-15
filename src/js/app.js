@@ -35,6 +35,22 @@ app.controller('DocController', ['GoogleDriveService', function(GoogleDriveServi
 
 }]);
 
+/**********************
+    DIRECTIVES STACK
+***********************/
+
+app.directive('oathbtn', function(){
+  return {
+    scope: {
+      post: '=',
+      body: '='
+    },
+    transclude: true,
+    templateUrl: 'oauth.html'
+
+  };
+});
+
 /******************************
     GOOGLE DOC SERVICE STACK
 *******************************/
