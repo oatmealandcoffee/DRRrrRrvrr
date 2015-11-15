@@ -5,7 +5,7 @@ Additional Copyright: None
 Source: New source only; no adaptations.
 Requirements: None
 Notes:
-*
+* OAuth credential management: https://console.developers.google.com/project/enhanced-medium-112111/apiui/credential
 
 Bugs:
 *
@@ -29,6 +29,31 @@ X Step 1: Get this running
     // Any controller, directive, or service will need tests associated with it.
     // don't test whether the API is working. Mock it.
     // Don't test services through the controllers, test one thing at a time.
+* Actionable Step 2: Convert existing app to angular
+    * Create CLIENT_ID and SCOPES service
+    * Create directive for oauth button // see Week-10-solution
+        * include in index.html
+    * Create Google Drive Service // see routastic
+        * Migrate app.js code
+        * inject client/scopes service
+        * add button to index.html for oauth
+    > Create list controller // see app.js; requires oauth directive, Google Drive Service
+        * add Google Drive service
+        * Add oauth directive
+    > Create document view controller // see app.js; requires oauth directive Google Drive Service
+        * add Google Drive service
+        * Add oauth directive
+    * Create routing config // see Routastic
+        * '/list'
+        * '/doc'
+        * Merge doc.html and index.html common code
+        * Create doc.html and list.html views
+    * Create client id and scopes service // see routastic
+
+    * Tests
+* Step 3: Translate the text
+    * Create service for the public API
+    * inject service into document view controller
 * Rubric
     X Created a client ID
     * Use of routing
@@ -42,5 +67,9 @@ X Step 1: Get this running
 
 Change History:
     15_11_06_01_00_000: Started source
+
+    /* COMPLETED STEP 1 */
+
+    15_11_15_01_01_000: Started prep to convert to Angular
 
     cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Started source"; git push origin master; git status

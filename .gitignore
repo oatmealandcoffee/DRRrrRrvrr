@@ -2,3 +2,5 @@ node_modules
 bower_components
 dist
 src/js/config.js
+src/js/app_orig.js
+src/index_orig.html
