@@ -73,5 +73,6 @@ Change History:
     15_11_15_02_01_000: Started prep to convert to Angular
     15_11_15_02_02_000: Added get code to ConfigService and updated config to json
     15_11_15_02_03_000: Updated ConfigService to populate values from config files and init upon load
+    15_11_15_02_04_000: Updated GoogleDriveService to use ConfigService for auth tokens
 
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated ConfigService to populate values from config files and init upon load"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated GoogleDriveService to use ConfigService for auth tokens"; git push origin master; git status

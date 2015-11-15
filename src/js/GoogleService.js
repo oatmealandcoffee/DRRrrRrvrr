@@ -28,7 +28,7 @@ angular.module('DRRrrRrvrr')
      */
     svc.handleAuthClick = function(event) {
       gapi.auth.authorize(
-        {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+        {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
         handleAuthResult);
       return false;
     }
