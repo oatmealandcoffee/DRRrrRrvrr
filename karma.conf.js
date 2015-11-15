@@ -20,6 +20,7 @@ module.exports = function(config) {
       'bower_components/angular/angular.min.js',
       'bower_components/angular-route/angular-route.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-xeditable/dist/js/xeditable.js',
       'src/js/**/*.js',
       'src/tests/**/*.js'
     ],
