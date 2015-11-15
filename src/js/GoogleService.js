@@ -1,5 +1,5 @@
 angular.module('DRRrrRrvrr')
-  .service('GoogleDriveService', ['$http', 'users', function($http, users){
+  .service('GoogleDriveService', ['$http', 'ConfigService', function($http, ConfigService){
 
       var svc = this;
 

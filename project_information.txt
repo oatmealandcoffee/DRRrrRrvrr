@@ -71,5 +71,6 @@ Change History:
     /* COMPLETED STEP 1 */
 
     15_11_15_01_01_000: Started prep to convert to Angular
+    15_11_15_01_01_000: Added get code to ConfigService and updated config to json
 
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Started source"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Started prep to convert to Angular"; git push origin master; git status
