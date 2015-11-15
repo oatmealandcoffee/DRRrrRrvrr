@@ -25,8 +25,13 @@ app.config(['$routeProvider', function($routeProvider){
     CONTROLLER STACK
 ***********************/
 
-app.controller('ListController', ['GoogleDriveService', function(GoogleDriveService){
+app.controller('ListController', ['$rootScope', 'GoogleDriveService', function($rootScope, GoogleDriveService){
     var lc = this;
+
+    lc.handleAuthClick = function(event) {
+        GoogleDriveService.handleAuthClick(event);
+        GoogleDriveService.listFiles();
+    };
 
 }]);
 
@@ -46,8 +51,9 @@ app.directive('oathbtn', function(){
       body: '='
     },
     transclude: true,
-    templateUrl: 'oauth.html'
-
+    templateUrl: 'oauth.html',
+    controller: 'ListController',
+    controllerAs: 'lc'
   };
 });
 
@@ -64,11 +70,12 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
    * @param {Object} authResult Authorization result.
    */
   svc.handleAuthResult = function(authResult) {
+      console.log('GoogleDriveService.handleAuthResult');
     var authorizeDiv = document.getElementById('authorize-div');
     if (authResult && !authResult.error) {
       // Hide auth UI, then load client library.
       authorizeDiv.style.display = 'none';
-      loadDriveApi();
+      svc.loadDriveApi();
     } else {
       // Show auth UI, allowing the user to initiate authorization by
       // clicking authorize button.
@@ -82,9 +89,11 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
    * @param {Event} event Button click event.
    */
   svc.handleAuthClick = function(event) {
+      console.log('GoogleDriveService.handleAuthClick');
+      console.log(ConfigService.CLIENT_ID + ConfigService.SCOPES);
     gapi.auth.authorize(
       {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
-      handleAuthResult);
+      svc.handleAuthResult);
     return false;
 };
 
@@ -92,6 +101,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
    * Load Drive API client library.
    */
   svc.loadDriveApi = function() {
+      console.log('GoogleDriveService.loadDriveApi');
     gapi.client.load('drive', 'v2', action);
 };
 
@@ -99,6 +109,7 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
    * Print files.
    */
   svc.listFiles = function() {
+      console.log('GoogleDriveService.listFiles');
     var request = gapi.client.drive.files.list({
         'maxResults': 10,
         'q': "mimeType = 'application/vnd.google-apps.document'"
@@ -109,10 +120,12 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
         if (files && files.length > 0) {
           for (var i = 0; i < files.length; i++) {
             var file = files[i];
-            appendLink(file.id, file.title);
+            console.log(file.title);
+            svc.appendLink(file.id, file.title);
           }
         } else {
-          appendLink('', 'No files found.');
+            console.log('No files found.');
+          svc.appendLink('', 'No files found.');
         }
       });
   };

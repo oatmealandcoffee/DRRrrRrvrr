@@ -35,9 +35,10 @@ X Step 1: Get this running
 	X fix jshint errors
 	X get karma up to date with all the frameworks
     X Create CLIENT_ID and SCOPES service
-    * Create directive for oauth button // see Week-10-solution
-        * include in index.html as button
-        * Use GoogleDriveService as controller
+    > Create directive for oauth button // see Week-10-solution
+        X include in index.html as button
+        X Use GoogleDriveService as controller
+        * Move init code in head of HTML into controller or service
         * Update view with $rootScope.apply() // see discussions
     X Create Google Drive Service // see routastic
         X Migrate app.js code
@@ -78,4 +79,4 @@ Change History:
 	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
 	15_11_15_02_07_000: Added oauth directive to html
 	
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Added oauth directive to html"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Closing up shop"; git push origin master; git status
