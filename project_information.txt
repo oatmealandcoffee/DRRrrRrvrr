@@ -38,8 +38,8 @@ X Step 1: Get this running
     > Create directive for oauth button // see Week-10-solution
         X include in index.html as button
         X Use GoogleDriveService as controller
-        * Move init code in head of HTML into controller or service
-        * load google drive api in head or in service
+        X Move init code in head of HTML into controller or service
+        X load google drive api in head or in service
         [@
             <script>
                 function init() {
@@ -50,8 +50,8 @@ X Step 1: Get this running
             <script src="vendor.js"></script>
             <script src="app.js"></script>
         @]
-        * add window.checkAuth to oauth button directive
-        * Update view with $rootScope.apply() // see discussions
+        X add window.checkAuth to oauth button directive
+        > Update view with $rootScope.apply() // see discussions
     X Create Google Drive Service // see routastic
         X Migrate app.js code
         X inject client/scopes service
@@ -90,5 +90,6 @@ Change History:
 	15_11_15_02_06_000: Refactored everything to single app.js file to have easier control over load order and file management
 	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
 	15_11_15_02_07_000: Added oauth directive to html
+	15_11_21_02_08_000: Updated to better manage google api code
 
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Closing up shop"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated to better manage google api code"; git push origin master; git status

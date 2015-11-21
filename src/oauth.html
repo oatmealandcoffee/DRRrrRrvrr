@@ -1,4 +1,14 @@
 <div id="authorize-div">
+    <script>
+        window.setInterval(function(){
+            if(window.checkAuth){
+                window.checkAuth();
+                window.clearInterval(interval);
+            }
+            }, 2000);
+        };
+        window.action = "list";
+    </script>
   <span>Authorize access to Drive API</span>
   <!--Button for the user to click to initiate auth sequence -->
   <button class="btn" id="authorize-btn" ng-click="lc.handleAuthClick()">

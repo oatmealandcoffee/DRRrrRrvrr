@@ -2,20 +2,15 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="styles.css"/>
+    <!-- init the google drive api to manage the load order later -->
     <script>
-    var init = function() {
-      var interval = window.setInterval(function(){
-        if(window.checkAuth){
-          window.checkAuth();
-          window.clearInterval(interval);
+        function init() {
+            gapi.client.load('drive', 'v2');
         }
-      }, 2000);
-    };
-    window.action = "list";
     </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script src="vendors.js"></script>
     <script src="app.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=init"></script>
   </head>
   <body ng-app="DRRrrRrvrr" ng-cloak class="container">
     <h1>Hello Google DRRrrRrvrr!</h1>
