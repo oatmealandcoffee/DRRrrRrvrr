@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="DRRrrRrvrr" ng-cloak>
   <head>
     <link rel="stylesheet" href="styles.css"/>
     <!-- init the google drive api to manage the load order later -->
     <script>
-        function init() {
-            gapi.client.load('drive', 'v2');
-        }
+    function init() {
+        console.log('window.init');
+        gapi.client.load('drive', 'v2');
+    }
     </script>
+
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script src="vendors.js"></script>
     <script src="app.js"></script>
   </head>
-  <body ng-app="DRRrrRrvrr" ng-cloak class="container">
+  <body class="container">
     <h1>Hello Google DRRrrRrvrr!</h1>
-    <oathbtn></oathbtn>
+    <oathbtn>
+    </oathbtn>
     <div id="output" class="well">
       <ul></ul>
     </div>

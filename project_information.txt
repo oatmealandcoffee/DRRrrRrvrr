@@ -7,6 +7,57 @@ Requirements: None
 Notes:
 * OAuth credential management: https://console.developers.google.com/project/enhanced-medium-112111/apiui/credential
 
+window.setInterval
+window.checkAuth
+handleAuthResult
+loadDriveApi
+listFiles -> JSON
+
+<click link to file>
+appendLink
+window.checkAuth
+handleAuthResult
+loadDriveApi
+displayFile -> JSON
+
+"to get the file list to work, I decoupled the authorization from the list loading functionality, and that seems to help. I also had to use the $q service (not covered or even mentioned in class) to manage thread control (I don't like callback rainbows), and at least one $scope.$digest();"
+
+"I did a couple of things different then what you seem to have done. 
+* I decoupled the listFiles callback from the auth callback. The handleAuthResult just sets an isAuthorized variable on my service. 
+	* Instead I watched for the my isAuthorized variable to change then fetch the files in my controllers (list and document). 
+	* This gave me a little more control over how things were happening, although I'm sure there's other (possibly cleaner) ways to do it as well. 
+* I also had to use $rootScope.$apply in a few places in order to get things to update (see other posts in this thread). 
+* Your check auth using the interval should just move into the directive definition. 
+	* Take a look at the example from the module videos http://plnkr.co/edit/kwW5BuWERrbIcfWF948h?p=preview (Links to an external site.) on how to do that. 
+* You don't need the window.action because that's being handled with angular routes. 
+* As for testing, I just mocked all of the google auth/client code and utilize callbacks (see other posts in this thread). 
+X As for the 403, looks like you've exceeded your auth attempts... you might be able to create new credentials to get around that or wait a day."
+[@
+/* What happens with $apply */ 
+angular.module('myApp',[]).controller('MessageController', function($scope) {
+    
+      $scope.getMessage = function() {
+        setTimeout(function() {
+          $scope.$apply(function() {
+            //wrapped this within $apply
+            $scope.message = 'Fetched after 3 seconds'; 
+            console.log('message:' + $scope.message);
+          });
+        }, 2000);
+      }
+      $scope.getMessage();
+    });
+@]
+...OR...
+[@
+$scope.getMessage = function() {
+  setTimeout(function() {
+    $scope.message = 'Fetched after two seconds';
+    console.log('message:' + $scope.message);
+    $scope.$apply(); //this triggers a $digest
+  }, 2000);
+};
+@]
 Bugs:
 *
 
@@ -52,6 +103,11 @@ X Step 1: Get this running
         @]
         X add window.checkAuth to oauth button directive
         > Update view with $rootScope.apply() // see discussions
+        * Update oauth directive to use $interval for the interval-ed checkAuth code that updates isAuthorized in controller(? we need to inject controller? No, that's not right)
+        * Add isAuthorized variable for list fetch to check before fetching
+        	* the goal is to decouple the auth from the list files
+        * $q service may need to be used to manage async
+
     X Create Google Drive Service // see routastic
         X Migrate app.js code
         X inject client/scopes service
@@ -91,5 +147,6 @@ Change History:
 	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
 	15_11_15_02_07_000: Added oauth directive to html
 	15_11_21_02_08_000: Updated to better manage google api code
+	15_11_22_02_09_000: Updated to load files on page load
 
     cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated to better manage google api code"; git push origin master; git status
