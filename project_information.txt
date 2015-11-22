@@ -103,22 +103,35 @@ X Step 1: Get this running
         @]
         X add window.checkAuth to oauth button directive
         > Update view with $rootScope.apply() // see discussions
-        * Update oauth directive to use $interval for the interval-ed checkAuth code that updates isAuthorized in controller(? we need to inject controller? No, that's not right)
-        * Add isAuthorized variable for list fetch to check before fetching
-        	* the goal is to decouple the auth from the list files
-        * $q service may need to be used to manage async
+        X Update oauth directive to use $interval for the interval-ed checkAuth code that updates isAuthorized in controller(? we need to inject controller? No, that's not right)
+        X Add isAuthorized variable for list fetch to check before fetching
+        	// the goal is to decouple the auth from the list files
+        - $q service may need to be used to manage async
 
     X Create Google Drive Service // see routastic
         X Migrate app.js code
         X inject client/scopes service
-    > Create list controller // see app.js; requires oauth directive, Google
+    X Create list controller // see app.js; requires oauth directive, Google
         * Add oauth directive
-    > Create document view controller // see app.js; requires oauth directive
-    * Create routing config // see Routastic
+    X Create document view controller // see app.js; requires oauth directive
+     * Create routing config // see Routastic
         * Merge doc.html and index.html common code
-        * Create doc.html and list.html views
+        * Create list.html view
+        * Create doc.html view
+        * Updated index.html to use ng-view
+    * Test file list loading
+    * Handle document loading
+    	* use Routing config
+    		* update doc.html to /doc
+    	* use oauth for loading
+    		* get id from URL
+    		* Beware of having to load the API a second time
     * Update client id and scopes service to pull from server // see routastic
     * Tests
+    	* should get list of files from google api
+    	* should list all the files in the DOM
+    	* should get a file when link clicked
+    	* should display contents of file
 * Step 3: Translate the text
     * Create service for the public API
     * inject service into document view controller
@@ -147,6 +160,6 @@ Change History:
 	15_11_15_02_06_001: Fixed bugs in bower, gulp, and karma
 	15_11_15_02_07_000: Added oauth directive to html
 	15_11_21_02_08_000: Updated to better manage google api code
-	15_11_22_02_09_000: Updated to load files on page load
+	15_11_22_02_09_000: Updated to load files on page load. Man, that was hard.
 
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated to better manage google api code"; git push origin master; git status
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated to load files on page load"; git push origin master; git status
