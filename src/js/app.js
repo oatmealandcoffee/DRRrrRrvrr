@@ -6,18 +6,18 @@ var app = angular.module('DRRrrRrvrr', ['ngRoute']);
 
 app.config(['$routeProvider', function($routeProvider){
   $routeProvider
-    .when('/list', {
-      templateUrl: 'templates/list.html',
+    .when('/list.html', {
+      templateUrl: '/list.html',
       controller: 'ListController',
       controllerAs: 'lc'
     })
-    .when('/doc', {
-      templateUrl: 'templates/doc.html',
+    .when('/doc.html', {
+      templateUrl: '/doc.html',
       controller: 'DocController',
       controllerAs: 'dc'
     })
     .otherwise({
-      redirectTo: '/list'
+      redirectTo: '/list.html'
     });
 }]);
 
@@ -38,7 +38,16 @@ app.controller('ListController', ['$rootScope', 'GoogleDriveService', function($
     lc.checkAuth = function() {
         console.log('lc.checkAuth');
         GoogleDriveService.checkAuth();
-    }
+    };
+
+    lc.files = function() {
+        // if ( GoogleDriveServices.files ) {
+        console.log('ListController.files');
+        return GoogleDriveServices.files;
+        // } else {
+        //     console.log('ListController.files: NO FILES FOUND');
+        // }
+    };
 
 }]);
 
@@ -51,9 +60,10 @@ app.controller('DocController', ['GoogleDriveService', function(GoogleDriveServi
     DIRECTIVES STACK
 ***********************/
 
-app.directive('oathbtn', ['GoogleDriveService', '$interval', function( GoogleDriveService, $interval ){
+app.directive('oathbtn', ['GoogleDriveService', '$interval', '$rootScope', function( GoogleDriveService, $interval, $rootScope ){
 
     var link = function(scope, element, attrs){
+        /*
         var promise;
         var verifyAuth = function () {
             console.log("window.interval");
@@ -66,6 +76,7 @@ app.directive('oathbtn', ['GoogleDriveService', '$interval', function( GoogleDri
             }
         };
         var promise = $interval(verifyAuth, 2000);
+        */
     };
 
     return {
@@ -77,7 +88,7 @@ app.directive('oathbtn', ['GoogleDriveService', '$interval', function( GoogleDri
         transclude: true,
         templateUrl: 'oauth.html',
         controller: 'ListController',
-        controllerAs: 'lc'
+        controllerAs: 'lc',
     };
 }]);
 
@@ -85,10 +96,11 @@ app.directive('oathbtn', ['GoogleDriveService', '$interval', function( GoogleDri
     GOOGLE DOC SERVICE STACK
 *******************************/
 
-app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, ConfigService){
+app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', function($http, $rootScope, $q, ConfigService){
     var gds = this;
 
     gds.authVerified = false;
+    gds.files;
 
     gds.checkAuth = function() {
   	console.log('GoogleDriveService.checkAuth');
@@ -128,6 +140,66 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
    * @param {Event} event Button click event.
    */
   gds.handleAuthClick = function(event) {
+
+      /*
+      function asyncGreet(name) {
+        // perform some asynchronous operation, resolve or reject the promise when appropriate.
+        return $q(function(resolve, reject) {
+          setTimeout(function() {
+            if (okToGreet(name)) {
+              resolve('Hello, ' + name + '!');
+            } else {
+              reject('Greeting ' + name + ' is not allowed.');
+            }
+          }, 1000);
+        });
+      }
+
+      var promise = asyncGreet('Robin Hood');
+      promise.then(function(greeting) {
+        alert('Success: ' + greeting);
+      }, function(reason) {
+        alert('Failed: ' + reason);
+      });
+      */
+
+      function asyncGetList() {
+          return $q(function ( resolve, reject ) {
+            setTimeout( function() {
+                if( gds.checkAuth() ) {
+                    resolve( 'GoogleDriveService.asyncGetList.resolved' );
+                } else {
+                    reject( 'GoogleDriveService.asyncGetList.rejected' );
+                }
+            }, 2000);
+          });
+      }
+
+      var promise = asyncGetList();
+      promise.then( function() {
+          // success
+          console.log('GoogleDriveService.asyncGetList.promise.success');
+          gds.listFiles();
+      }, function(reason) {
+          // failure
+          console.log('GoogleDriveService.asyncGetList.promise.failure');
+      } );
+
+      /*
+      var promise;
+      var verifyAuth = function () {
+          console.log("window.interval");
+          if( GoogleDriveService.checkAuth ){
+              GoogleDriveService.checkAuth();
+              if ( GoogleDriveService.authVerified ) {
+                  $interval.cancel(promise);
+                  GoogleDriveService.listFiles();
+              }
+          }
+      };
+      var promise = $interval(verifyAuth, 2000);
+      */
+
       console.log('GoogleDriveService.handleAuthClick');
     gapi.auth.authorize(
       {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
@@ -157,18 +229,19 @@ app.service('GoogleDriveService', ['$http', 'ConfigService', function($http, Con
       });
 
       request.execute(function(resp) {
-          console.log(JSON.stringify(resp) );
-        var files = resp.items;
-        if (files && files.length > 0) {
-          for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            console.log(file.title);
+        gds.files = resp.items;
+        if (gds.files && gds.files.length > 0) {
+          for (var i = 0; i < gds.files.length; i++) {
+            var file = gds.files[i];
+            console.log('GoogleDriveService.gds.file: ' + file.title);
             gds.appendLink(file.id, file.title);
           }
         } else {
 
           gds.appendLink('', 'No files found.');
         }
+
+
       });
   };
 

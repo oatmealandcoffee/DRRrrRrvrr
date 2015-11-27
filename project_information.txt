@@ -161,5 +161,6 @@ Change History:
 	15_11_15_02_07_000: Added oauth directive to html
 	15_11_21_02_08_000: Updated to better manage google api code
 	15_11_22_02_09_000: Updated to load files on page load. Man, that was hard.
-
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated to load files on page load"; git push origin master; git status
+	15_11_27_02_10_000: Updated GoogleDriveService to use $q
+	
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated GoogleDriveService to use $q"; git push origin master; git status
