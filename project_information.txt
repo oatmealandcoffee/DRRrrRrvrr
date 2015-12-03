@@ -103,6 +103,8 @@ X Step 1: Get this running
         @]
         X add window.checkAuth to oauth button directive
         > Update view with $rootScope.apply() // see discussions
+        	* GoogleDriveService.asyncGetList.promise.success is where the files get loaded, but then the code needs to get called to add it to the view. Somehow the loading of the gapi needs to be called when the view is loaded, and the list of files returned.
+        		* ListController.handleAuthClick kicks off the process, so the list needs to be returned at that point.
         X Update oauth directive to use $interval for the interval-ed checkAuth code that updates isAuthorized in controller(? we need to inject controller? No, that's not right)
         X Add isAuthorized variable for list fetch to check before fetching
         	// the goal is to decouple the auth from the list files
@@ -132,16 +134,17 @@ X Step 1: Get this running
     	* should list all the files in the DOM
     	* should get a file when link clicked
     	* should display contents of file
+    * I $watch files in my listController and call $digest inside the function that captures them. I also don't use appendLink function, I use ng-repeat and directives to grab file id and create link in my list template. 
 * Step 3: Translate the text
     * Create service for the public API
     * inject service into document view controller
 * Rubric
     X Created a client ID
-    * Use of routing
-        * For at least the two views: list and document
-    * Use of directive
-        * for at least the oauth button
-    * Use of service for gdata
+    X Use of routing
+        X For at least the two views: list and document
+    X Use of directive
+        X for at least the oauth button
+    X Use of service for gdata
     * Use of service for ztranslator
     * Testing
         * controllers, directives and services.

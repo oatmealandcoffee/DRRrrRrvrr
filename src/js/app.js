@@ -25,28 +25,57 @@ app.config(['$routeProvider', function($routeProvider){
     CONTROLLER STACK
 ***********************/
 
-app.controller('ListController', ['$rootScope', 'GoogleDriveService', function($rootScope, GoogleDriveService){
+app.controller('ListController', ['$scope', '$rootScope', 'GoogleDriveService', function($scope, $rootScope, GoogleDriveService){
     var lc = this;
+    lc.files = [];
 
     lc.handleAuthClick = function(event) {
         console.log('lc.handleAuthClick');
         GoogleDriveService.checkAuth();
-        GoogleDriveService.handleAuthClick(event);
-        GoogleDriveService.listFiles();
+        GoogleDriveService.handleAuthClick(event, function(f){
+            console.log('f ' + f);
+            lc.files = f;
+            lc.listFiles();
+            $rootScope.$digest();
+        });
     };
 
-    lc.checkAuth = function() {
-        console.log('lc.checkAuth');
-        GoogleDriveService.checkAuth();
-    };
+    $scope.$watch(
+        function ( $scope ) {
+            // Return the "result" of the watch expression.
+            return lc.files;
+        },
+        lc.listFiles = function () {
+            if (lc.files && lc.files.length > 0) {
+                for (var i = 0; i < lc.files.length; i++) {
+                    var file = lc.files[i];
+                    console.log('lc.file: ' + file.title);
+                    //lc.appendLink(file.id, file.title);
+                }
+            } else {
+                lc.appendLink('', 'No files found');
+            }
+        }
+    );
 
-    lc.files = function() {
-        // if ( GoogleDriveServices.files ) {
-        console.log('ListController.files');
-        return GoogleDriveServices.files;
-        // } else {
-        //     console.log('ListController.files: NO FILES FOUND');
-        // }
+    /**
+     * Append a link element to the body containing the given text
+     * and a link to the /doc page.
+     *
+     * @param {string} id Id to be used in the link's href attribute.
+     * @param {string} text Text to be placed in a element.
+     */
+    lc.appendLink = function(id, text){
+      if(id != ''){
+        var li = $('<li></li>');
+        var link = $('<a></a>');
+        link.attr('href', '/doc.html#'+id);
+        link.html(text);
+        li.append(link);
+        $('#output ul').append(li);
+      } else {
+        $('#output').append(text);
+      }
     };
 
 }]);
@@ -60,31 +89,13 @@ app.controller('DocController', ['GoogleDriveService', function(GoogleDriveServi
     DIRECTIVES STACK
 ***********************/
 
-app.directive('oathbtn', ['GoogleDriveService', '$interval', '$rootScope', function( GoogleDriveService, $interval, $rootScope ){
-
-    var link = function(scope, element, attrs){
-        /*
-        var promise;
-        var verifyAuth = function () {
-            console.log("window.interval");
-            if( GoogleDriveService.checkAuth ){
-                GoogleDriveService.checkAuth();
-                if ( GoogleDriveService.authVerified ) {
-                    $interval.cancel(promise);
-                    GoogleDriveService.listFiles();
-                }
-            }
-        };
-        var promise = $interval(verifyAuth, 2000);
-        */
-    };
+app.directive('oathbtn', [function(){
 
     return {
         scope: {
             post: '=',
             body: '='
         },
-        link: link,
         transclude: true,
         templateUrl: 'oauth.html',
         controller: 'ListController',
@@ -96,7 +107,7 @@ app.directive('oathbtn', ['GoogleDriveService', '$interval', '$rootScope', funct
     GOOGLE DOC SERVICE STACK
 *******************************/
 
-app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', function($http, $rootScope, $q, ConfigService){
+app.service('GoogleDriveService', ['$http', '$q','ConfigService', function($http, $q, ConfigService){
     var gds = this;
 
     gds.authVerified = false;
@@ -139,29 +150,8 @@ app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', 
    *
    * @param {Event} event Button click event.
    */
-  gds.handleAuthClick = function(event) {
-
-      /*
-      function asyncGreet(name) {
-        // perform some asynchronous operation, resolve or reject the promise when appropriate.
-        return $q(function(resolve, reject) {
-          setTimeout(function() {
-            if (okToGreet(name)) {
-              resolve('Hello, ' + name + '!');
-            } else {
-              reject('Greeting ' + name + ' is not allowed.');
-            }
-          }, 1000);
-        });
-      }
-
-      var promise = asyncGreet('Robin Hood');
-      promise.then(function(greeting) {
-        alert('Success: ' + greeting);
-      }, function(reason) {
-        alert('Failed: ' + reason);
-      });
-      */
+  gds.handleAuthClick = function(event, callback) {
+      console.log('GoogleDriveService.handleAuthClick');
 
       function asyncGetList() {
           return $q(function ( resolve, reject ) {
@@ -179,33 +169,18 @@ app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', 
       promise.then( function() {
           // success
           console.log('GoogleDriveService.asyncGetList.promise.success');
-          gds.listFiles();
+          gapi.auth.authorize(
+            {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
+            gds.handleAuthResult);
+            gds.listFiles(callback);
+          return false;
+
       }, function(reason) {
           // failure
           console.log('GoogleDriveService.asyncGetList.promise.failure');
-      } );
+      });
 
-      /*
-      var promise;
-      var verifyAuth = function () {
-          console.log("window.interval");
-          if( GoogleDriveService.checkAuth ){
-              GoogleDriveService.checkAuth();
-              if ( GoogleDriveService.authVerified ) {
-                  $interval.cancel(promise);
-                  GoogleDriveService.listFiles();
-              }
-          }
-      };
-      var promise = $interval(verifyAuth, 2000);
-      */
-
-      console.log('GoogleDriveService.handleAuthClick');
-    gapi.auth.authorize(
-      {client_id: ConfigService.CLIENT_ID, scope: ConfigService.SCOPES, immediate: false},
-      gds.handleAuthResult);
-    return false;
-}   ;
+};
 
   /**
    * Load Drive API client library.
@@ -218,7 +193,7 @@ app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', 
   /**
    * Print files.
    */
-  gds.listFiles = function() {
+  gds.listFiles = function(callback) {
       console.log('GoogleDriveService.listFiles');
       if (!gds.authVerified ) {
           return;
@@ -230,18 +205,9 @@ app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', 
 
       request.execute(function(resp) {
         gds.files = resp.items;
-        if (gds.files && gds.files.length > 0) {
-          for (var i = 0; i < gds.files.length; i++) {
-            var file = gds.files[i];
-            console.log('GoogleDriveService.gds.file: ' + file.title);
-            gds.appendLink(file.id, file.title);
+          if (callback) {
+            callback(gds.files);
           }
-        } else {
-
-          gds.appendLink('', 'No files found.');
-        }
-
-
       });
   };
 
@@ -269,32 +235,10 @@ app.service('GoogleDriveService', ['$http', '$rootScope', '$q','ConfigService', 
     });
     };
 
-  /**
-   * Append a link element to the body containing the given text
-   * and a link to the /doc page.
-   *
-   * @param {string} id Id to be used in the link's href attribute.
-   * @param {string} text Text to be placed in a element.
-   */
-  gds.appendLink = function(id, text){
-    if(id != ''){
-      var li = $('<li></li>');
-      var link = $('<a></a>');
-      link.attr('href', '/doc.html#'+id);
-      link.html(text);
-      li.append(link);
-      $('#output ul').append(li);
-    } else {
-      $('#output').append(text);
-    }
-    };
-
-
-
 }]);
 
 app.service('ConfigService', [function(){
     var svc = this;
-    svc.CLIENT_ID = '454670861658-qr85pr5030lnlep82jeb5ljo3025amfe.apps.googleusercontent.com';
-    svc.SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
+    svc.CLIENT_ID = '__CLIENT_ID__';  // <== Replace __CLIENT_ID__ with your ID
+    svc.SCOPES = ['__SCOPE__'];  // <== Replace __SCOPE__ with your Scope
 }]);
