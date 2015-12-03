@@ -22,25 +22,25 @@ displayFile -> JSON
 
 "to get the file list to work, I decoupled the authorization from the list loading functionality, and that seems to help. I also had to use the $q service (not covered or even mentioned in class) to manage thread control (I don't like callback rainbows), and at least one $scope.$digest();"
 
-"I did a couple of things different then what you seem to have done. 
-* I decoupled the listFiles callback from the auth callback. The handleAuthResult just sets an isAuthorized variable on my service. 
-	* Instead I watched for the my isAuthorized variable to change then fetch the files in my controllers (list and document). 
-	* This gave me a little more control over how things were happening, although I'm sure there's other (possibly cleaner) ways to do it as well. 
-* I also had to use $rootScope.$apply in a few places in order to get things to update (see other posts in this thread). 
-* Your check auth using the interval should just move into the directive definition. 
-	* Take a look at the example from the module videos http://plnkr.co/edit/kwW5BuWERrbIcfWF948h?p=preview (Links to an external site.) on how to do that. 
-* You don't need the window.action because that's being handled with angular routes. 
-* As for testing, I just mocked all of the google auth/client code and utilize callbacks (see other posts in this thread). 
+"I did a couple of things different then what you seem to have done.
+* I decoupled the listFiles callback from the auth callback. The handleAuthResult just sets an isAuthorized variable on my service.
+	* Instead I watched for the my isAuthorized variable to change then fetch the files in my controllers (list and document).
+	* This gave me a little more control over how things were happening, although I'm sure there's other (possibly cleaner) ways to do it as well.
+* I also had to use $rootScope.$apply in a few places in order to get things to update (see other posts in this thread).
+* Your check auth using the interval should just move into the directive definition.
+	* Take a look at the example from the module videos http://plnkr.co/edit/kwW5BuWERrbIcfWF948h?p=preview (Links to an external site.) on how to do that.
+* You don't need the window.action because that's being handled with angular routes.
+* As for testing, I just mocked all of the google auth/client code and utilize callbacks (see other posts in this thread).
 X As for the 403, looks like you've exceeded your auth attempts... you might be able to create new credentials to get around that or wait a day."
 [@
-/* What happens with $apply */ 
+/* What happens with $apply */
 angular.module('myApp',[]).controller('MessageController', function($scope) {
-    
+
       $scope.getMessage = function() {
         setTimeout(function() {
           $scope.$apply(function() {
             //wrapped this within $apply
-            $scope.message = 'Fetched after 3 seconds'; 
+            $scope.message = 'Fetched after 3 seconds';
             console.log('message:' + $scope.message);
           });
         }, 2000);
@@ -134,7 +134,7 @@ X Step 1: Get this running
     	* should list all the files in the DOM
     	* should get a file when link clicked
     	* should display contents of file
-    * I $watch files in my listController and call $digest inside the function that captures them. I also don't use appendLink function, I use ng-repeat and directives to grab file id and create link in my list template. 
+    * I $watch files in my listController and call $digest inside the function that captures them. I also don't use appendLink function, I use ng-repeat and directives to grab file id and create link in my list template.
 * Step 3: Translate the text
     * Create service for the public API
     * inject service into document view controller
@@ -165,5 +165,5 @@ Change History:
 	15_11_21_02_08_000: Updated to better manage google api code
 	15_11_22_02_09_000: Updated to load files on page load. Man, that was hard.
 	15_11_27_02_10_000: Updated GoogleDriveService to use $q
-	
-    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Updated GoogleDriveService to use $q"; git push origin master; git status
+
+    cd ~/cscie32/DRRrrRrvrr; git status; git commit -a -m "Wrapping up for submission to TA for questions"; git push origin master; git status
